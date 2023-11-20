@@ -1,14 +1,16 @@
+import { FiniteField } from "./finite-field";
 import { Fp2 } from "./fp2";
 
 export { Fp6 };
 
 // c0x^0 + c1x^1 + c2x^2
-class Fp6 {
+class Fp6 extends FiniteField {
   c0: Fp2;
   c1: Fp2;
   c2: Fp2;
 
   constructor(c0: Fp2, c1: Fp2, c2: Fp2) {
+    super();
     this.c0 = c0;
     this.c1 = c1;
     this.c2 = c2;
@@ -31,5 +33,15 @@ class Fp6 {
 
   sub(b: Fp6) {
     return Fp6.from(this.c0.sub(b.c0), this.c1.sub(b.c2), this.c2.sub(b.c2));
+  }
+
+  mul(b: FiniteField): FiniteField {
+    throw new Error("Method not implemented.");
+  }
+  div(b: FiniteField): FiniteField {
+    throw new Error("Method not implemented.");
+  }
+  square(): FiniteField {
+    throw new Error("Method not implemented.");
   }
 }

@@ -1,6 +1,6 @@
 import { randomBytes } from "crypto";
 
-export { Field };
+export { Fp };
 
 function mod(a: bigint, p: bigint) {
   let x = a % p;
@@ -85,14 +85,14 @@ Output:
 */
 function sqrt(n: bigint, p: bigint) {}
 
-class Field {
+class Fp {
   value: bigint;
 
   static p: bigint =
     0x1a0111ea397fe69a4b1ba7b6434bacd764774b84f38512bf6730d2a0f6b0f6241eabfffeb153ffffb9feffffffffaaabn;
 
-  constructor(x: bigint | Field) {
-    this.value = mod(Field.isField(x) ? x.value : x, Field.p);
+  constructor(x: bigint | Fp) {
+    this.value = mod(Fp.isFp(x) ? x.value : x, Fp.p);
   }
 
   static get modulus() {
@@ -108,76 +108,76 @@ class Field {
   }
 
   static zero() {
-    return new Field(0n);
+    return new Fp(0n);
   }
 
   static one() {
-    return new Field(1n);
+    return new Fp(1n);
   }
 
   static random() {
-    return new Field(random(Field.p));
+    return new Fp(random(Fp.p));
   }
 
-  add(x: Field | bigint): Field {
-    return new Field(add(this.value, Field.isField(x) ? x.value : x, Field.p));
+  add(x: Fp | bigint): Fp {
+    return new Fp(add(this.value, Fp.isFp(x) ? x.value : x, Fp.p));
   }
 
-  sub(x: Field | bigint): Field {
-    return new Field(sub(this.value, Field.isField(x) ? x.value : x, Field.p));
+  sub(x: Fp | bigint): Fp {
+    return new Fp(sub(this.value, Fp.isFp(x) ? x.value : x, Fp.p));
   }
 
-  mul(x: Field | bigint): Field {
-    return new Field(mul(this.value, Field.isField(x) ? x.value : x, Field.p));
+  mul(x: Fp | bigint): Fp {
+    return new Fp(mul(this.value, Fp.isFp(x) ? x.value : x, Fp.p));
   }
 
-  square(): Field {
-    return new Field(pow(this.value, 2n, Field.p));
+  square(): Fp {
+    return new Fp(pow(this.value, 2n, Fp.p));
   }
 
-  pow(x: Field | bigint): Field {
-    return new Field(pow(this.value, Field.isField(x) ? x.value : x, Field.p));
+  pow(x: Fp | bigint): Fp {
+    return new Fp(pow(this.value, Fp.isFp(x) ? x.value : x, Fp.p));
   }
 
-  div(x: Field | bigint) {
-    return this.mul(Field.from(x).inverse());
+  div(x: Fp | bigint) {
+    return this.mul(Fp.from(x).inverse());
   }
 
   inverse() {
-    let x = inverse(this.value, Field.p)!;
+    let x = inverse(this.value, Fp.p)!;
     if (x === undefined) throw Error("Inverse does not exist");
-    return new Field(x);
+    return new Fp(x);
   }
 
-  equals(a: Field | bigint) {
-    return Field.isField(a) ? a.value === this.value : a === this.value;
+  equals(a: Fp | bigint) {
+    return Fp.isFp(a) ? a.value === this.value : a === this.value;
   }
 
-  lessThan(a: Field | bigint) {
-    return Field.isField(a) ? a.value > this.value : a > this.value;
+  lessThan(a: Fp | bigint) {
+    return Fp.isFp(a) ? a.value > this.value : a > this.value;
   }
 
-  lessThanOrEqual(a: Field | bigint) {
-    return Field.isField(a) ? a.value >= this.value : a >= this.value;
+  lessThanOrEqual(a: Fp | bigint) {
+    return Fp.isFp(a) ? a.value >= this.value : a >= this.value;
   }
 
-  greaterThan(a: Field | bigint) {
+  greaterThan(a: Fp | bigint) {
     return !this.lessThan(a);
   }
 
-  greaterThanOrEqual(a: Field | bigint) {
+  greaterThanOrEqual(a: Fp | bigint) {
     return !this.lessThanOrEqual(a);
   }
 
   inRange() {
-    return this.value <= Field.p;
+    return this.value <= Fp.p;
   }
 
-  static from(x: bigint | Field) {
-    return new Field(x);
+  static from(x: bigint | Fp) {
+    return new Fp(x);
   }
 
-  static isField(x: Field | bigint): x is Field {
+  static isFp(x: Fp | bigint): x is Fp {
     return typeof x !== "bigint";
   }
 }

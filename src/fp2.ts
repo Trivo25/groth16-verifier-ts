@@ -1,26 +1,28 @@
-import { Field } from "./bls12-381-field";
+import { Fp } from "./fp";
+import { FiniteField } from "./finite-field";
 
 export { Fp2 };
 
 // c0x^0 + c1x^1
-class Fp2 {
-  c0: Field;
-  c1: Field;
+class Fp2 extends FiniteField {
+  c0: Fp;
+  c1: Fp;
 
-  constructor(c0: Field, c1: Field) {
+  constructor(c0: Fp, c1: Fp) {
+    super();
     this.c0 = c0;
     this.c1 = c1;
   }
   static from(x: bigint, y: bigint): Fp2 {
-    return new Fp2(new Field(x), new Field(y));
+    return new Fp2(new Fp(x), new Fp(y));
   }
 
   static zero() {
-    return new Fp2(new Field(0n), new Field(0n));
+    return new Fp2(new Fp(0n), new Fp(0n));
   }
 
   static one() {
-    return new Fp2(new Field(1n), new Field(1n));
+    return new Fp2(new Fp(1n), new Fp(1n));
   }
 
   square() {
@@ -39,6 +41,10 @@ class Fp2 {
     let c0 = this.c0.mul(b.c0).sub(this.c1.mul(b.c1));
     let c1 = this.c0.mul(b.c1).add(this.c1.mul(b.c0));
     return new Fp2(c0, c1);
+  }
+
+  div(b: Fp2) {
+    return Fp2.zero();
   }
 
   add(b: Fp2) {
