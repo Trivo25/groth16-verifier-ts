@@ -35,13 +35,13 @@ class Fp6 extends FiniteField {
     return Fp6.from(this.c0.sub(b.c0), this.c1.sub(b.c2), this.c2.sub(b.c2));
   }
 
-  mul(b: FiniteField): FiniteField {
+  mul(b: Fp6): Fp6 {
     throw new Error("Method not implemented.");
   }
-  div(b: FiniteField): FiniteField {
+  div(b: Fp6): Fp6 {
     throw new Error("Method not implemented.");
   }
-  square(): FiniteField {
+  square(): Fp6 {
     throw new Error("Method not implemented.");
   }
 }
